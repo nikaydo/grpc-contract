@@ -29,7 +29,7 @@ message ApiTokenGetRequest {
     int32 id =1;
 }
 message Tokens {
-    repeated string token =1;
+    repeated string tokens =1;
 }
 message ApiTokenGetResponse {
     Tokens tokens =1;
