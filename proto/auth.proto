@@ -10,16 +10,20 @@ option go_package = "github.com/nikaydo/video-App-grpc;app";
 service Auth{
     rpc SignUp (SignUpRequest) returns (SignUpResponse);
     rpc SignIn (SignInRequest) returns (SignInResponse);
-    rpc CheckUser (CheckUserRequest) returns (CheckUserResponse);
-}
 
+    rpc CheckUser (CheckUserRequest) returns (CheckUserResponse);
+    rpc CreateTokens(CreateTokensRequest) returns (CreateTokensResponse);
+    rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+
+    rpc ValidateJWT(ValidateJWTRequest) returns (ValidateJWTResponse);
+} 
 message SignUpRequest {
   string login = 1; 
   string password = 2; 
 }
 
 message SignUpResponse {
-  int64 user_id = 1;
+  int32 user_id = 1;
 }
 
 message SignInRequest {
@@ -35,8 +39,37 @@ message SignInResponse {
 message CheckUserRequest {
   string login = 1; 
   string password = 2; 
+  bool withPass =3;
 }
 
 message CheckUserResponse {
-  bool user_id = 1; 
+  int32 user_id = 1; 
+}
+
+message CreateTokensRequest {
+  int32 id = 1; 
+  string login = 2; 
+  string role = 3; 
+}
+
+message CreateTokensResponse {
+  string jwtToken = 1; 
+  string refreshToken = 2; 
+}
+
+message  UpdateUserRequest{
+  int32 id = 1; 
+  string refresh = 2;
+}
+  
+message UpdateUserResponse {
+  bool result =1;
+}
+
+message  ValidateJWTRequest{
+  string token = 1; 
+}
+
+message ValidateJWTResponse {
+  bool result =1;
 }

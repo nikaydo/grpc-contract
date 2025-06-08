@@ -23,9 +23,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_SignUp_FullMethodName    = "/auth.Auth/SignUp"
-	Auth_SignIn_FullMethodName    = "/auth.Auth/SignIn"
-	Auth_CheckUser_FullMethodName = "/auth.Auth/CheckUser"
+	Auth_SignUp_FullMethodName       = "/auth.Auth/SignUp"
+	Auth_SignIn_FullMethodName       = "/auth.Auth/SignIn"
+	Auth_CheckUser_FullMethodName    = "/auth.Auth/CheckUser"
+	Auth_CreateTokens_FullMethodName = "/auth.Auth/CreateTokens"
+	Auth_UpdateUser_FullMethodName   = "/auth.Auth/UpdateUser"
+	Auth_ValidateJWT_FullMethodName  = "/auth.Auth/ValidateJWT"
 )
 
 // AuthClient is the client API for Auth service.
@@ -35,6 +38,9 @@ type AuthClient interface {
 	SignUp(ctx context.Context, in *SignUpRequest, opts ...grpc.CallOption) (*SignUpResponse, error)
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
 	CheckUser(ctx context.Context, in *CheckUserRequest, opts ...grpc.CallOption) (*CheckUserResponse, error)
+	CreateTokens(ctx context.Context, in *CreateTokensRequest, opts ...grpc.CallOption) (*CreateTokensResponse, error)
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
+	ValidateJWT(ctx context.Context, in *ValidateJWTRequest, opts ...grpc.CallOption) (*ValidateJWTResponse, error)
 }
 
 type authClient struct {
@@ -75,6 +81,36 @@ func (c *authClient) CheckUser(ctx context.Context, in *CheckUserRequest, opts .
 	return out, nil
 }
 
+func (c *authClient) CreateTokens(ctx context.Context, in *CreateTokensRequest, opts ...grpc.CallOption) (*CreateTokensResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateTokensResponse)
+	err := c.cc.Invoke(ctx, Auth_CreateTokens_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateUserResponse)
+	err := c.cc.Invoke(ctx, Auth_UpdateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) ValidateJWT(ctx context.Context, in *ValidateJWTRequest, opts ...grpc.CallOption) (*ValidateJWTResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ValidateJWTResponse)
+	err := c.cc.Invoke(ctx, Auth_ValidateJWT_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServer is the server API for Auth service.
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
@@ -82,6 +118,9 @@ type AuthServer interface {
 	SignUp(context.Context, *SignUpRequest) (*SignUpResponse, error)
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
 	CheckUser(context.Context, *CheckUserRequest) (*CheckUserResponse, error)
+	CreateTokens(context.Context, *CreateTokensRequest) (*CreateTokensResponse, error)
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
+	ValidateJWT(context.Context, *ValidateJWTRequest) (*ValidateJWTResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -100,6 +139,15 @@ func (UnimplementedAuthServer) SignIn(context.Context, *SignInRequest) (*SignInR
 }
 func (UnimplementedAuthServer) CheckUser(context.Context, *CheckUserRequest) (*CheckUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckUser not implemented")
+}
+func (UnimplementedAuthServer) CreateTokens(context.Context, *CreateTokensRequest) (*CreateTokensResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTokens not implemented")
+}
+func (UnimplementedAuthServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
+}
+func (UnimplementedAuthServer) ValidateJWT(context.Context, *ValidateJWTRequest) (*ValidateJWTResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ValidateJWT not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -176,6 +224,60 @@ func _Auth_CheckUser_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Auth_CreateTokens_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTokensRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).CreateTokens(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_CreateTokens_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).CreateTokens(ctx, req.(*CreateTokensRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_UpdateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_ValidateJWT_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ValidateJWTRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).ValidateJWT(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_ValidateJWT_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).ValidateJWT(ctx, req.(*ValidateJWTRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Auth_ServiceDesc is the grpc.ServiceDesc for Auth service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -194,6 +296,18 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckUser",
 			Handler:    _Auth_CheckUser_Handler,
+		},
+		{
+			MethodName: "CreateTokens",
+			Handler:    _Auth_CreateTokens_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _Auth_UpdateUser_Handler,
+		},
+		{
+			MethodName: "ValidateJWT",
+			Handler:    _Auth_ValidateJWT_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
