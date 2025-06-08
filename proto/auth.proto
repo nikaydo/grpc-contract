@@ -41,8 +41,14 @@ message CheckUserRequest {
   bool withPass =3;
 }
 
+message User {
+  int32 id = 1;
+  string login = 2;
+  string refresh = 3;
+}
+
 message CheckUserResponse {
-  int32 user_id = 1; 
+  User user =1;
 }
 
 message CreateTokensRequest {

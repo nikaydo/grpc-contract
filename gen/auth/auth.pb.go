@@ -285,16 +285,76 @@ func (x *CheckUserRequest) GetWithPass() bool {
 	return false
 }
 
+type User struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Login         string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
+	Refresh       string                 `protobuf:"bytes,3,opt,name=refresh,proto3" json:"refresh,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *User) Reset() {
+	*x = User{}
+	mi := &file_auth_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *User) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*User) ProtoMessage() {}
+
+func (x *User) ProtoReflect() protoreflect.Message {
+	mi := &file_auth_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use User.ProtoReflect.Descriptor instead.
+func (*User) Descriptor() ([]byte, []int) {
+	return file_auth_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *User) GetId() int32 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *User) GetLogin() string {
+	if x != nil {
+		return x.Login
+	}
+	return ""
+}
+
+func (x *User) GetRefresh() string {
+	if x != nil {
+		return x.Refresh
+	}
+	return ""
+}
+
 type CheckUserResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	User          *User                  `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CheckUserResponse) Reset() {
 	*x = CheckUserResponse{}
-	mi := &file_auth_proto_msgTypes[5]
+	mi := &file_auth_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -306,7 +366,7 @@ func (x *CheckUserResponse) String() string {
 func (*CheckUserResponse) ProtoMessage() {}
 
 func (x *CheckUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[5]
+	mi := &file_auth_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -319,14 +379,14 @@ func (x *CheckUserResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUserResponse.ProtoReflect.Descriptor instead.
 func (*CheckUserResponse) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{5}
+	return file_auth_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *CheckUserResponse) GetUserId() int32 {
+func (x *CheckUserResponse) GetUser() *User {
 	if x != nil {
-		return x.UserId
+		return x.User
 	}
-	return 0
+	return nil
 }
 
 type CreateTokensRequest struct {
@@ -340,7 +400,7 @@ type CreateTokensRequest struct {
 
 func (x *CreateTokensRequest) Reset() {
 	*x = CreateTokensRequest{}
-	mi := &file_auth_proto_msgTypes[6]
+	mi := &file_auth_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -352,7 +412,7 @@ func (x *CreateTokensRequest) String() string {
 func (*CreateTokensRequest) ProtoMessage() {}
 
 func (x *CreateTokensRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[6]
+	mi := &file_auth_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -365,7 +425,7 @@ func (x *CreateTokensRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTokensRequest.ProtoReflect.Descriptor instead.
 func (*CreateTokensRequest) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{6}
+	return file_auth_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CreateTokensRequest) GetId() int32 {
@@ -399,7 +459,7 @@ type CreateTokensResponse struct {
 
 func (x *CreateTokensResponse) Reset() {
 	*x = CreateTokensResponse{}
-	mi := &file_auth_proto_msgTypes[7]
+	mi := &file_auth_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -411,7 +471,7 @@ func (x *CreateTokensResponse) String() string {
 func (*CreateTokensResponse) ProtoMessage() {}
 
 func (x *CreateTokensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[7]
+	mi := &file_auth_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -424,7 +484,7 @@ func (x *CreateTokensResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateTokensResponse.ProtoReflect.Descriptor instead.
 func (*CreateTokensResponse) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{7}
+	return file_auth_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateTokensResponse) GetJwtToken() string {
@@ -451,7 +511,7 @@ type ValidateJWTRequest struct {
 
 func (x *ValidateJWTRequest) Reset() {
 	*x = ValidateJWTRequest{}
-	mi := &file_auth_proto_msgTypes[8]
+	mi := &file_auth_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -463,7 +523,7 @@ func (x *ValidateJWTRequest) String() string {
 func (*ValidateJWTRequest) ProtoMessage() {}
 
 func (x *ValidateJWTRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[8]
+	mi := &file_auth_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -476,7 +536,7 @@ func (x *ValidateJWTRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateJWTRequest.ProtoReflect.Descriptor instead.
 func (*ValidateJWTRequest) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{8}
+	return file_auth_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ValidateJWTRequest) GetToken() string {
@@ -503,7 +563,7 @@ type ValidateJWTResponse struct {
 
 func (x *ValidateJWTResponse) Reset() {
 	*x = ValidateJWTResponse{}
-	mi := &file_auth_proto_msgTypes[9]
+	mi := &file_auth_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -515,7 +575,7 @@ func (x *ValidateJWTResponse) String() string {
 func (*ValidateJWTResponse) ProtoMessage() {}
 
 func (x *ValidateJWTResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[9]
+	mi := &file_auth_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -528,7 +588,7 @@ func (x *ValidateJWTResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateJWTResponse.ProtoReflect.Descriptor instead.
 func (*ValidateJWTResponse) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{9}
+	return file_auth_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ValidateJWTResponse) GetId() int32 {
@@ -565,9 +625,14 @@ const file_auth_proto_rawDesc = "" +
 	"\x10CheckUserRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12\x1a\n" +
-	"\bwithPass\x18\x03 \x01(\bR\bwithPass\",\n" +
-	"\x11CheckUserResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\"O\n" +
+	"\bwithPass\x18\x03 \x01(\bR\bwithPass\"F\n" +
+	"\x04User\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
+	"\x05login\x18\x02 \x01(\tR\x05login\x12\x18\n" +
+	"\arefresh\x18\x03 \x01(\tR\arefresh\"3\n" +
+	"\x11CheckUserResponse\x12\x1e\n" +
+	"\x04user\x18\x01 \x01(\v2\n" +
+	".auth.UserR\x04user\"O\n" +
 	"\x13CreateTokensRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
 	"\x05login\x18\x02 \x01(\tR\x05login\x12\x12\n" +
@@ -600,35 +665,37 @@ func file_auth_proto_rawDescGZIP() []byte {
 	return file_auth_proto_rawDescData
 }
 
-var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_auth_proto_goTypes = []any{
 	(*SignUpRequest)(nil),        // 0: auth.SignUpRequest
 	(*SignUpResponse)(nil),       // 1: auth.SignUpResponse
 	(*SignInRequest)(nil),        // 2: auth.SignInRequest
 	(*SignInResponse)(nil),       // 3: auth.SignInResponse
 	(*CheckUserRequest)(nil),     // 4: auth.CheckUserRequest
-	(*CheckUserResponse)(nil),    // 5: auth.CheckUserResponse
-	(*CreateTokensRequest)(nil),  // 6: auth.CreateTokensRequest
-	(*CreateTokensResponse)(nil), // 7: auth.CreateTokensResponse
-	(*ValidateJWTRequest)(nil),   // 8: auth.ValidateJWTRequest
-	(*ValidateJWTResponse)(nil),  // 9: auth.ValidateJWTResponse
+	(*User)(nil),                 // 5: auth.User
+	(*CheckUserResponse)(nil),    // 6: auth.CheckUserResponse
+	(*CreateTokensRequest)(nil),  // 7: auth.CreateTokensRequest
+	(*CreateTokensResponse)(nil), // 8: auth.CreateTokensResponse
+	(*ValidateJWTRequest)(nil),   // 9: auth.ValidateJWTRequest
+	(*ValidateJWTResponse)(nil),  // 10: auth.ValidateJWTResponse
 }
 var file_auth_proto_depIdxs = []int32{
-	0, // 0: auth.Auth.SignUp:input_type -> auth.SignUpRequest
-	2, // 1: auth.Auth.SignIn:input_type -> auth.SignInRequest
-	4, // 2: auth.Auth.CheckUser:input_type -> auth.CheckUserRequest
-	6, // 3: auth.Auth.CreateTokens:input_type -> auth.CreateTokensRequest
-	8, // 4: auth.Auth.ValidateJWT:input_type -> auth.ValidateJWTRequest
-	1, // 5: auth.Auth.SignUp:output_type -> auth.SignUpResponse
-	3, // 6: auth.Auth.SignIn:output_type -> auth.SignInResponse
-	5, // 7: auth.Auth.CheckUser:output_type -> auth.CheckUserResponse
-	7, // 8: auth.Auth.CreateTokens:output_type -> auth.CreateTokensResponse
-	9, // 9: auth.Auth.ValidateJWT:output_type -> auth.ValidateJWTResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	5,  // 0: auth.CheckUserResponse.user:type_name -> auth.User
+	0,  // 1: auth.Auth.SignUp:input_type -> auth.SignUpRequest
+	2,  // 2: auth.Auth.SignIn:input_type -> auth.SignInRequest
+	4,  // 3: auth.Auth.CheckUser:input_type -> auth.CheckUserRequest
+	7,  // 4: auth.Auth.CreateTokens:input_type -> auth.CreateTokensRequest
+	9,  // 5: auth.Auth.ValidateJWT:input_type -> auth.ValidateJWTRequest
+	1,  // 6: auth.Auth.SignUp:output_type -> auth.SignUpResponse
+	3,  // 7: auth.Auth.SignIn:output_type -> auth.SignInResponse
+	6,  // 8: auth.Auth.CheckUser:output_type -> auth.CheckUserResponse
+	8,  // 9: auth.Auth.CreateTokens:output_type -> auth.CreateTokensResponse
+	10, // 10: auth.Auth.ValidateJWT:output_type -> auth.ValidateJWTResponse
+	6,  // [6:11] is the sub-list for method output_type
+	1,  // [1:6] is the sub-list for method input_type
+	1,  // [1:1] is the sub-list for extension type_name
+	1,  // [1:1] is the sub-list for extension extendee
+	0,  // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_auth_proto_init() }
@@ -642,7 +709,7 @@ func file_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_proto_rawDesc), len(file_auth_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   11,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
