@@ -58,6 +58,7 @@ message CreateTokensResponse {
 
 message  ValidateJWTRequest{
   string token = 1; 
+  bool refresh = 2; 
 }
 
 message ValidateJWTResponse {

@@ -444,6 +444,7 @@ func (x *CreateTokensResponse) GetRefreshToken() string {
 type ValidateJWTRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Refresh       bool                   `protobuf:"varint,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -483,6 +484,13 @@ func (x *ValidateJWTRequest) GetToken() string {
 		return x.Token
 	}
 	return ""
+}
+
+func (x *ValidateJWTRequest) GetRefresh() bool {
+	if x != nil {
+		return x.Refresh
+	}
+	return false
 }
 
 type ValidateJWTResponse struct {
@@ -566,9 +574,10 @@ const file_auth_proto_rawDesc = "" +
 	"\x04role\x18\x03 \x01(\tR\x04role\"V\n" +
 	"\x14CreateTokensResponse\x12\x1a\n" +
 	"\bjwtToken\x18\x01 \x01(\tR\bjwtToken\x12\"\n" +
-	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"*\n" +
+	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"D\n" +
 	"\x12ValidateJWTRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\";\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x12\x18\n" +
+	"\arefresh\x18\x02 \x01(\bR\arefresh\";\n" +
 	"\x13ValidateJWTResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
 	"\x05login\x18\x02 \x01(\tR\x05login2\xb9\x02\n" +
