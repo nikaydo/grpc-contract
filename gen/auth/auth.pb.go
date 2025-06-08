@@ -441,102 +441,6 @@ func (x *CreateTokensResponse) GetRefreshToken() string {
 	return ""
 }
 
-type UpdateUserRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Refresh       string                 `protobuf:"bytes,2,opt,name=refresh,proto3" json:"refresh,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateUserRequest) Reset() {
-	*x = UpdateUserRequest{}
-	mi := &file_auth_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateUserRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateUserRequest) ProtoMessage() {}
-
-func (x *UpdateUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateUserRequest.ProtoReflect.Descriptor instead.
-func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *UpdateUserRequest) GetId() int32 {
-	if x != nil {
-		return x.Id
-	}
-	return 0
-}
-
-func (x *UpdateUserRequest) GetRefresh() string {
-	if x != nil {
-		return x.Refresh
-	}
-	return ""
-}
-
-type UpdateUserResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Result        bool                   `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateUserResponse) Reset() {
-	*x = UpdateUserResponse{}
-	mi := &file_auth_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateUserResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateUserResponse) ProtoMessage() {}
-
-func (x *UpdateUserResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateUserResponse.ProtoReflect.Descriptor instead.
-func (*UpdateUserResponse) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *UpdateUserResponse) GetResult() bool {
-	if x != nil {
-		return x.Result
-	}
-	return false
-}
-
 type ValidateJWTRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
@@ -546,7 +450,7 @@ type ValidateJWTRequest struct {
 
 func (x *ValidateJWTRequest) Reset() {
 	*x = ValidateJWTRequest{}
-	mi := &file_auth_proto_msgTypes[10]
+	mi := &file_auth_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -558,7 +462,7 @@ func (x *ValidateJWTRequest) String() string {
 func (*ValidateJWTRequest) ProtoMessage() {}
 
 func (x *ValidateJWTRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[10]
+	mi := &file_auth_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -571,7 +475,7 @@ func (x *ValidateJWTRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateJWTRequest.ProtoReflect.Descriptor instead.
 func (*ValidateJWTRequest) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{10}
+	return file_auth_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ValidateJWTRequest) GetToken() string {
@@ -583,14 +487,15 @@ func (x *ValidateJWTRequest) GetToken() string {
 
 type ValidateJWTResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Result        bool                   `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Login         string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ValidateJWTResponse) Reset() {
 	*x = ValidateJWTResponse{}
-	mi := &file_auth_proto_msgTypes[11]
+	mi := &file_auth_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -602,7 +507,7 @@ func (x *ValidateJWTResponse) String() string {
 func (*ValidateJWTResponse) ProtoMessage() {}
 
 func (x *ValidateJWTResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_auth_proto_msgTypes[11]
+	mi := &file_auth_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -615,14 +520,21 @@ func (x *ValidateJWTResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ValidateJWTResponse.ProtoReflect.Descriptor instead.
 func (*ValidateJWTResponse) Descriptor() ([]byte, []int) {
-	return file_auth_proto_rawDescGZIP(), []int{11}
+	return file_auth_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ValidateJWTResponse) GetResult() bool {
+func (x *ValidateJWTResponse) GetId() int32 {
 	if x != nil {
-		return x.Result
+		return x.Id
 	}
-	return false
+	return 0
+}
+
+func (x *ValidateJWTResponse) GetLogin() string {
+	if x != nil {
+		return x.Login
+	}
+	return ""
 }
 
 var File_auth_proto protoreflect.FileDescriptor
@@ -654,23 +566,17 @@ const file_auth_proto_rawDesc = "" +
 	"\x04role\x18\x03 \x01(\tR\x04role\"V\n" +
 	"\x14CreateTokensResponse\x12\x1a\n" +
 	"\bjwtToken\x18\x01 \x01(\tR\bjwtToken\x12\"\n" +
-	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"=\n" +
-	"\x11UpdateUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x18\n" +
-	"\arefresh\x18\x02 \x01(\tR\arefresh\",\n" +
-	"\x12UpdateUserResponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\bR\x06result\"*\n" +
+	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"*\n" +
 	"\x12ValidateJWTRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"-\n" +
-	"\x13ValidateJWTResponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\bR\x06result2\xfa\x02\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\";\n" +
+	"\x13ValidateJWTResponse\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
+	"\x05login\x18\x02 \x01(\tR\x05login2\xb9\x02\n" +
 	"\x04Auth\x123\n" +
 	"\x06SignUp\x12\x13.auth.SignUpRequest\x1a\x14.auth.SignUpResponse\x123\n" +
 	"\x06SignIn\x12\x13.auth.SignInRequest\x1a\x14.auth.SignInResponse\x12<\n" +
 	"\tCheckUser\x12\x16.auth.CheckUserRequest\x1a\x17.auth.CheckUserResponse\x12E\n" +
-	"\fCreateTokens\x12\x19.auth.CreateTokensRequest\x1a\x1a.auth.CreateTokensResponse\x12?\n" +
-	"\n" +
-	"UpdateUser\x12\x17.auth.UpdateUserRequest\x1a\x18.auth.UpdateUserResponse\x12B\n" +
+	"\fCreateTokens\x12\x19.auth.CreateTokensRequest\x1a\x1a.auth.CreateTokensResponse\x12B\n" +
 	"\vValidateJWT\x12\x18.auth.ValidateJWTRequest\x1a\x19.auth.ValidateJWTResponseB'Z%github.com/nikaydo/video-App-grpc;appb\x06proto3"
 
 var (
@@ -685,7 +591,7 @@ func file_auth_proto_rawDescGZIP() []byte {
 	return file_auth_proto_rawDescData
 }
 
-var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_auth_proto_goTypes = []any{
 	(*SignUpRequest)(nil),        // 0: auth.SignUpRequest
 	(*SignUpResponse)(nil),       // 1: auth.SignUpResponse
@@ -695,29 +601,25 @@ var file_auth_proto_goTypes = []any{
 	(*CheckUserResponse)(nil),    // 5: auth.CheckUserResponse
 	(*CreateTokensRequest)(nil),  // 6: auth.CreateTokensRequest
 	(*CreateTokensResponse)(nil), // 7: auth.CreateTokensResponse
-	(*UpdateUserRequest)(nil),    // 8: auth.UpdateUserRequest
-	(*UpdateUserResponse)(nil),   // 9: auth.UpdateUserResponse
-	(*ValidateJWTRequest)(nil),   // 10: auth.ValidateJWTRequest
-	(*ValidateJWTResponse)(nil),  // 11: auth.ValidateJWTResponse
+	(*ValidateJWTRequest)(nil),   // 8: auth.ValidateJWTRequest
+	(*ValidateJWTResponse)(nil),  // 9: auth.ValidateJWTResponse
 }
 var file_auth_proto_depIdxs = []int32{
-	0,  // 0: auth.Auth.SignUp:input_type -> auth.SignUpRequest
-	2,  // 1: auth.Auth.SignIn:input_type -> auth.SignInRequest
-	4,  // 2: auth.Auth.CheckUser:input_type -> auth.CheckUserRequest
-	6,  // 3: auth.Auth.CreateTokens:input_type -> auth.CreateTokensRequest
-	8,  // 4: auth.Auth.UpdateUser:input_type -> auth.UpdateUserRequest
-	10, // 5: auth.Auth.ValidateJWT:input_type -> auth.ValidateJWTRequest
-	1,  // 6: auth.Auth.SignUp:output_type -> auth.SignUpResponse
-	3,  // 7: auth.Auth.SignIn:output_type -> auth.SignInResponse
-	5,  // 8: auth.Auth.CheckUser:output_type -> auth.CheckUserResponse
-	7,  // 9: auth.Auth.CreateTokens:output_type -> auth.CreateTokensResponse
-	9,  // 10: auth.Auth.UpdateUser:output_type -> auth.UpdateUserResponse
-	11, // 11: auth.Auth.ValidateJWT:output_type -> auth.ValidateJWTResponse
-	6,  // [6:12] is the sub-list for method output_type
-	0,  // [0:6] is the sub-list for method input_type
-	0,  // [0:0] is the sub-list for extension type_name
-	0,  // [0:0] is the sub-list for extension extendee
-	0,  // [0:0] is the sub-list for field type_name
+	0, // 0: auth.Auth.SignUp:input_type -> auth.SignUpRequest
+	2, // 1: auth.Auth.SignIn:input_type -> auth.SignInRequest
+	4, // 2: auth.Auth.CheckUser:input_type -> auth.CheckUserRequest
+	6, // 3: auth.Auth.CreateTokens:input_type -> auth.CreateTokensRequest
+	8, // 4: auth.Auth.ValidateJWT:input_type -> auth.ValidateJWTRequest
+	1, // 5: auth.Auth.SignUp:output_type -> auth.SignUpResponse
+	3, // 6: auth.Auth.SignIn:output_type -> auth.SignInResponse
+	5, // 7: auth.Auth.CheckUser:output_type -> auth.CheckUserResponse
+	7, // 8: auth.Auth.CreateTokens:output_type -> auth.CreateTokensResponse
+	9, // 9: auth.Auth.ValidateJWT:output_type -> auth.ValidateJWTResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_auth_proto_init() }
@@ -731,7 +633,7 @@ func file_auth_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_auth_proto_rawDesc), len(file_auth_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

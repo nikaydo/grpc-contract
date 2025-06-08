@@ -27,7 +27,6 @@ const (
 	Auth_SignIn_FullMethodName       = "/auth.Auth/SignIn"
 	Auth_CheckUser_FullMethodName    = "/auth.Auth/CheckUser"
 	Auth_CreateTokens_FullMethodName = "/auth.Auth/CreateTokens"
-	Auth_UpdateUser_FullMethodName   = "/auth.Auth/UpdateUser"
 	Auth_ValidateJWT_FullMethodName  = "/auth.Auth/ValidateJWT"
 )
 
@@ -39,7 +38,6 @@ type AuthClient interface {
 	SignIn(ctx context.Context, in *SignInRequest, opts ...grpc.CallOption) (*SignInResponse, error)
 	CheckUser(ctx context.Context, in *CheckUserRequest, opts ...grpc.CallOption) (*CheckUserResponse, error)
 	CreateTokens(ctx context.Context, in *CreateTokensRequest, opts ...grpc.CallOption) (*CreateTokensResponse, error)
-	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 	ValidateJWT(ctx context.Context, in *ValidateJWTRequest, opts ...grpc.CallOption) (*ValidateJWTResponse, error)
 }
 
@@ -91,16 +89,6 @@ func (c *authClient) CreateTokens(ctx context.Context, in *CreateTokensRequest, 
 	return out, nil
 }
 
-func (c *authClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateUserResponse)
-	err := c.cc.Invoke(ctx, Auth_UpdateUser_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *authClient) ValidateJWT(ctx context.Context, in *ValidateJWTRequest, opts ...grpc.CallOption) (*ValidateJWTResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ValidateJWTResponse)
@@ -119,7 +107,6 @@ type AuthServer interface {
 	SignIn(context.Context, *SignInRequest) (*SignInResponse, error)
 	CheckUser(context.Context, *CheckUserRequest) (*CheckUserResponse, error)
 	CreateTokens(context.Context, *CreateTokensRequest) (*CreateTokensResponse, error)
-	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	ValidateJWT(context.Context, *ValidateJWTRequest) (*ValidateJWTResponse, error)
 	mustEmbedUnimplementedAuthServer()
 }
@@ -142,9 +129,6 @@ func (UnimplementedAuthServer) CheckUser(context.Context, *CheckUserRequest) (*C
 }
 func (UnimplementedAuthServer) CreateTokens(context.Context, *CreateTokensRequest) (*CreateTokensResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTokens not implemented")
-}
-func (UnimplementedAuthServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
 func (UnimplementedAuthServer) ValidateJWT(context.Context, *ValidateJWTRequest) (*ValidateJWTResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ValidateJWT not implemented")
@@ -242,24 +226,6 @@ func _Auth_CreateTokens_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Auth_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateUserRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(AuthServer).UpdateUser(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Auth_UpdateUser_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).UpdateUser(ctx, req.(*UpdateUserRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _Auth_ValidateJWT_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ValidateJWTRequest)
 	if err := dec(in); err != nil {
@@ -300,10 +266,6 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateTokens",
 			Handler:    _Auth_CreateTokens_Handler,
-		},
-		{
-			MethodName: "UpdateUser",
-			Handler:    _Auth_UpdateUser_Handler,
 		},
 		{
 			MethodName: "ValidateJWT",
