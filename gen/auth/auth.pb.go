@@ -556,7 +556,8 @@ func (x *ValidateJWTRequest) GetRefresh() bool {
 type ValidateJWTResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Login         string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
+	Expired       bool                   `protobuf:"varint,2,opt,name=expired,proto3" json:"expired,omitempty"`
+	Login         string                 `protobuf:"bytes,3,opt,name=login,proto3" json:"login,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -596,6 +597,13 @@ func (x *ValidateJWTResponse) GetId() int32 {
 		return x.Id
 	}
 	return 0
+}
+
+func (x *ValidateJWTResponse) GetExpired() bool {
+	if x != nil {
+		return x.Expired
+	}
+	return false
 }
 
 func (x *ValidateJWTResponse) GetLogin() string {
@@ -642,10 +650,11 @@ const file_auth_proto_rawDesc = "" +
 	"\frefreshToken\x18\x02 \x01(\tR\frefreshToken\"D\n" +
 	"\x12ValidateJWTRequest\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x18\n" +
-	"\arefresh\x18\x02 \x01(\bR\arefresh\";\n" +
+	"\arefresh\x18\x02 \x01(\bR\arefresh\"U\n" +
 	"\x13ValidateJWTResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
-	"\x05login\x18\x02 \x01(\tR\x05login2\xb9\x02\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x18\n" +
+	"\aexpired\x18\x02 \x01(\bR\aexpired\x12\x14\n" +
+	"\x05login\x18\x03 \x01(\tR\x05login2\xb9\x02\n" +
 	"\x04Auth\x123\n" +
 	"\x06SignUp\x12\x13.auth.SignUpRequest\x1a\x14.auth.SignUpResponse\x123\n" +
 	"\x06SignIn\x12\x13.auth.SignInRequest\x1a\x14.auth.SignInResponse\x12<\n" +

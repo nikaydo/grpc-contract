@@ -69,5 +69,6 @@ message  ValidateJWTRequest{
 
 message ValidateJWTResponse {
   int32 id =1;
-  string login = 2;
+  bool expired = 2; 
+  string login = 3;
 }
