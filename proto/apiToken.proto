@@ -8,7 +8,7 @@ service apiToken{
     rpc Create(CreateRequest) returns (CreateResponse);
     rpc Delete(DeleteRequest) returns (DeleteResponse);
     rpc Get(GetRequest) returns (GetResponse);
-    rpc Verify(GetRequest) returns (GetResponse);
+    rpc Verify(VerifyRequest) returns (VerifyResponse);
 } 
 message CreateRequest {
     int32 id = 1;
@@ -30,4 +30,10 @@ message Tokens {
 }
 message GetResponse {
     Tokens tokens =1;
+}
+message VerifyRequest {
+    string token = 1;
+}
+message VerifyResponse {
+    bool result = 1;
 }

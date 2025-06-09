@@ -32,7 +32,7 @@ type ApiTokenClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
-	Verify(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error)
 }
 
 type apiTokenClient struct {
@@ -73,9 +73,9 @@ func (c *apiTokenClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *apiTokenClient) Verify(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error) {
+func (c *apiTokenClient) Verify(ctx context.Context, in *VerifyRequest, opts ...grpc.CallOption) (*VerifyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetResponse)
+	out := new(VerifyResponse)
 	err := c.cc.Invoke(ctx, ApiToken_Verify_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -90,7 +90,7 @@ type ApiTokenServer interface {
 	Create(context.Context, *CreateRequest) (*CreateResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	Get(context.Context, *GetRequest) (*GetResponse, error)
-	Verify(context.Context, *GetRequest) (*GetResponse, error)
+	Verify(context.Context, *VerifyRequest) (*VerifyResponse, error)
 	mustEmbedUnimplementedApiTokenServer()
 }
 
@@ -110,7 +110,7 @@ func (UnimplementedApiTokenServer) Delete(context.Context, *DeleteRequest) (*Del
 func (UnimplementedApiTokenServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
 }
-func (UnimplementedApiTokenServer) Verify(context.Context, *GetRequest) (*GetResponse, error) {
+func (UnimplementedApiTokenServer) Verify(context.Context, *VerifyRequest) (*VerifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Verify not implemented")
 }
 func (UnimplementedApiTokenServer) mustEmbedUnimplementedApiTokenServer() {}
@@ -189,7 +189,7 @@ func _ApiToken_Get_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 func _ApiToken_Verify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetRequest)
+	in := new(VerifyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func _ApiToken_Verify_Handler(srv interface{}, ctx context.Context, dec func(int
 		FullMethod: ApiToken_Verify_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiTokenServer).Verify(ctx, req.(*GetRequest))
+		return srv.(ApiTokenServer).Verify(ctx, req.(*VerifyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }

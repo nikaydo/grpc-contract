@@ -329,6 +329,94 @@ func (x *GetResponse) GetTokens() *Tokens {
 	return nil
 }
 
+type VerifyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyRequest) Reset() {
+	*x = VerifyRequest{}
+	mi := &file_apiToken_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyRequest) ProtoMessage() {}
+
+func (x *VerifyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_apiToken_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyRequest.ProtoReflect.Descriptor instead.
+func (*VerifyRequest) Descriptor() ([]byte, []int) {
+	return file_apiToken_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *VerifyRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type VerifyResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Result        bool                   `protobuf:"varint,1,opt,name=result,proto3" json:"result,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyResponse) Reset() {
+	*x = VerifyResponse{}
+	mi := &file_apiToken_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyResponse) ProtoMessage() {}
+
+func (x *VerifyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_apiToken_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyResponse.ProtoReflect.Descriptor instead.
+func (*VerifyResponse) Descriptor() ([]byte, []int) {
+	return file_apiToken_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *VerifyResponse) GetResult() bool {
+	if x != nil {
+		return x.Result
+	}
+	return false
+}
+
 var File_apiToken_proto protoreflect.FileDescriptor
 
 const file_apiToken_proto_rawDesc = "" +
@@ -348,12 +436,16 @@ const file_apiToken_proto_rawDesc = "" +
 	"\x06Tokens\x12\x16\n" +
 	"\x06tokens\x18\x01 \x03(\tR\x06tokens\"7\n" +
 	"\vGetResponse\x12(\n" +
-	"\x06tokens\x18\x01 \x01(\v2\x10.apiToken.TokensR\x06tokens2\xef\x01\n" +
+	"\x06tokens\x18\x01 \x01(\v2\x10.apiToken.TokensR\x06tokens\"%\n" +
+	"\rVerifyRequest\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"(\n" +
+	"\x0eVerifyResponse\x12\x16\n" +
+	"\x06result\x18\x01 \x01(\bR\x06result2\xf5\x01\n" +
 	"\bapiToken\x12;\n" +
 	"\x06Create\x12\x17.apiToken.CreateRequest\x1a\x18.apiToken.CreateResponse\x12;\n" +
 	"\x06Delete\x12\x17.apiToken.DeleteRequest\x1a\x18.apiToken.DeleteResponse\x122\n" +
-	"\x03Get\x12\x14.apiToken.GetRequest\x1a\x15.apiToken.GetResponse\x125\n" +
-	"\x06Verify\x12\x14.apiToken.GetRequest\x1a\x15.apiToken.GetResponseB,Z*github.com/nikaydo/video-App-grpc;apiTokenb\x06proto3"
+	"\x03Get\x12\x14.apiToken.GetRequest\x1a\x15.apiToken.GetResponse\x12;\n" +
+	"\x06Verify\x12\x17.apiToken.VerifyRequest\x1a\x18.apiToken.VerifyResponseB,Z*github.com/nikaydo/video-App-grpc;apiTokenb\x06proto3"
 
 var (
 	file_apiToken_proto_rawDescOnce sync.Once
@@ -367,7 +459,7 @@ func file_apiToken_proto_rawDescGZIP() []byte {
 	return file_apiToken_proto_rawDescData
 }
 
-var file_apiToken_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_apiToken_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_apiToken_proto_goTypes = []any{
 	(*CreateRequest)(nil),  // 0: apiToken.CreateRequest
 	(*CreateResponse)(nil), // 1: apiToken.CreateResponse
@@ -376,17 +468,19 @@ var file_apiToken_proto_goTypes = []any{
 	(*GetRequest)(nil),     // 4: apiToken.GetRequest
 	(*Tokens)(nil),         // 5: apiToken.Tokens
 	(*GetResponse)(nil),    // 6: apiToken.GetResponse
+	(*VerifyRequest)(nil),  // 7: apiToken.VerifyRequest
+	(*VerifyResponse)(nil), // 8: apiToken.VerifyResponse
 }
 var file_apiToken_proto_depIdxs = []int32{
 	5, // 0: apiToken.GetResponse.tokens:type_name -> apiToken.Tokens
 	0, // 1: apiToken.apiToken.Create:input_type -> apiToken.CreateRequest
 	2, // 2: apiToken.apiToken.Delete:input_type -> apiToken.DeleteRequest
 	4, // 3: apiToken.apiToken.Get:input_type -> apiToken.GetRequest
-	4, // 4: apiToken.apiToken.Verify:input_type -> apiToken.GetRequest
+	7, // 4: apiToken.apiToken.Verify:input_type -> apiToken.VerifyRequest
 	1, // 5: apiToken.apiToken.Create:output_type -> apiToken.CreateResponse
 	3, // 6: apiToken.apiToken.Delete:output_type -> apiToken.DeleteResponse
 	6, // 7: apiToken.apiToken.Get:output_type -> apiToken.GetResponse
-	6, // 8: apiToken.apiToken.Verify:output_type -> apiToken.GetResponse
+	8, // 8: apiToken.apiToken.Verify:output_type -> apiToken.VerifyResponse
 	5, // [5:9] is the sub-list for method output_type
 	1, // [1:5] is the sub-list for method input_type
 	1, // [1:1] is the sub-list for extension type_name
@@ -405,7 +499,7 @@ func file_apiToken_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_apiToken_proto_rawDesc), len(file_apiToken_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
