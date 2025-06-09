@@ -1,6 +1,3 @@
-// proto/sso/sso.proto
-
-// Версия ProtoBuf
 syntax = "proto3";
 
 package auth;   

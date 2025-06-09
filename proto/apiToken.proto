@@ -1,7 +1,3 @@
-
-// proto/sso/sso.proto
-
-// Версия ProtoBuf
 syntax = "proto3";
 
 package apiToken;   
@@ -9,28 +5,29 @@ package apiToken;
 option go_package = "github.com/nikaydo/video-App-grpc;apiToken";
 
 service apiToken{
-    rpc ApiTokenCreate(ApiTokenCreateRequest) returns (ApiTokenCreateResponse);
-    rpc ApiTokenDelete(ApiTokenDeleteRequest) returns (ApiTokenDeleteResponse);
-    rpc ApiTokenGet(ApiTokenGetRequest) returns (ApiTokenGetResponse);
+    rpc Create(CreateRequest) returns (CreateResponse);
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+    rpc Get(GetRequest) returns (GetResponse);
+    rpc Verify(GetRequest) returns (GetResponse);
 } 
-message ApiTokenCreateRequest {
+message CreateRequest {
     int32 id = 1;
 }
-message ApiTokenCreateResponse {
+message CreateResponse {
     string token = 1;
 }
-message ApiTokenDeleteRequest {
+message DeleteRequest {
     string token = 1;
 }
-message ApiTokenDeleteResponse {
+message DeleteResponse {
     bool result = 1;
 }
-message ApiTokenGetRequest {
+message GetRequest {
     int32 id =1;
 }
 message Tokens {
     repeated string tokens =1;
 }
-message ApiTokenGetResponse {
+message GetResponse {
     Tokens tokens =1;
 }
