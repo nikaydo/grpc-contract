@@ -77,6 +77,7 @@ type SavedVideo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Video         []byte                 `protobuf:"bytes,1,opt,name=video,proto3" json:"video,omitempty"`
 	Uuid          string                 `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -121,6 +122,13 @@ func (x *SavedVideo) GetVideo() []byte {
 func (x *SavedVideo) GetUuid() string {
 	if x != nil {
 		return x.Uuid
+	}
+	return ""
+}
+
+func (x *SavedVideo) GetTitle() string {
+	if x != nil {
+		return x.Title
 	}
 	return ""
 }
@@ -466,11 +474,12 @@ const file_video_proto_rawDesc = "" +
 	"GetRequest\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1d\n" +
 	"\n" +
-	"video_name\x18\x02 \x01(\tR\tvideoName\"6\n" +
+	"video_name\x18\x02 \x01(\tR\tvideoName\"L\n" +
 	"\n" +
 	"SavedVideo\x12\x14\n" +
 	"\x05video\x18\x01 \x01(\fR\x05video\x12\x12\n" +
-	"\x04uuid\x18\x02 \x01(\tR\x04uuid\"1\n" +
+	"\x04uuid\x18\x02 \x01(\tR\x04uuid\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\"1\n" +
 	"\x06Videos\x12'\n" +
 	"\x05video\x18\x01 \x03(\v2\x11.video.SavedVideoR\x05video\"2\n" +
 	"\vGetResponse\x12#\n" +
