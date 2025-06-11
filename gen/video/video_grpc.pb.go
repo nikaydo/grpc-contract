@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Video_Get_FullMethodName    = "/video.Video/Get"
+	Video_Stream_FullMethodName = "/video.Video/Stream"
 	Video_Add_FullMethodName    = "/video.Video/Add"
 	Video_Delete_FullMethodName = "/video.Video/Delete"
 )
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VideoClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
+	Stream(ctx context.Context, in *StreamRequest, opts ...grpc.CallOption) (*StreamResponse, error)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
 }
@@ -45,6 +47,16 @@ func (c *videoClient) Get(ctx context.Context, in *GetRequest, opts ...grpc.Call
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetResponse)
 	err := c.cc.Invoke(ctx, Video_Get_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *videoClient) Stream(ctx context.Context, in *StreamRequest, opts ...grpc.CallOption) (*StreamResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(StreamResponse)
+	err := c.cc.Invoke(ctx, Video_Stream_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +88,7 @@ func (c *videoClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grp
 // for forward compatibility.
 type VideoServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
+	Stream(context.Context, *StreamRequest) (*StreamResponse, error)
 	Add(context.Context, *AddRequest) (*AddResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
 	mustEmbedUnimplementedVideoServer()
@@ -90,6 +103,9 @@ type UnimplementedVideoServer struct{}
 
 func (UnimplementedVideoServer) Get(context.Context, *GetRequest) (*GetResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Get not implemented")
+}
+func (UnimplementedVideoServer) Stream(context.Context, *StreamRequest) (*StreamResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Stream not implemented")
 }
 func (UnimplementedVideoServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
@@ -132,6 +148,24 @@ func _Video_Get_Handler(srv interface{}, ctx context.Context, dec func(interface
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(VideoServer).Get(ctx, req.(*GetRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Video_Stream_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(StreamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(VideoServer).Stream(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Video_Stream_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(VideoServer).Stream(ctx, req.(*StreamRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +216,10 @@ var Video_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Get",
 			Handler:    _Video_Get_Handler,
+		},
+		{
+			MethodName: "Stream",
+			Handler:    _Video_Stream_Handler,
 		},
 		{
 			MethodName: "Add",

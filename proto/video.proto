@@ -6,8 +6,17 @@ option go_package = "github.com/nikaydo/video-Service;video";
 
 service Video{
     rpc Get(GetRequest) returns (GetResponse);
+    rpc Stream(StreamRequest) returns (StreamResponse);
     rpc Add(AddRequest) returns (AddResponse);
     rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message StreamRequest{
+    string uuid = 1;
+}
+
+message StreamResponse{
+    bytes video = 1;
 }
 
 message GetRequest {
@@ -16,7 +25,6 @@ message GetRequest {
 }
 
 message SavedVideo{
-    bytes video = 1;
     string uuid = 2;
     string title = 3;
 }
