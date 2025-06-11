@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package auth;   
 
-option go_package = "github.com/nikaydo/video-App-grpc;app";
+option go_package = "github.com/nikaydo/video-App-grpc;auth";
 
 service Auth{
     rpc SignUp (SignUpRequest) returns (SignUpResponse);

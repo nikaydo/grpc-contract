@@ -4,7 +4,7 @@
 // 	protoc        v3.21.12
 // source: auth.proto
 
-package app
+package auth
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -656,7 +656,7 @@ const file_auth_proto_rawDesc = "" +
 	"\x06SignIn\x12\x13.auth.SignInRequest\x1a\x14.auth.SignInResponse\x12<\n" +
 	"\tCheckUser\x12\x16.auth.CheckUserRequest\x1a\x17.auth.CheckUserResponse\x12E\n" +
 	"\fCreateTokens\x12\x19.auth.CreateTokensRequest\x1a\x1a.auth.CreateTokensResponse\x12B\n" +
-	"\vValidateJWT\x12\x18.auth.ValidateJWTRequest\x1a\x19.auth.ValidateJWTResponseB'Z%github.com/nikaydo/video-App-grpc;appb\x06proto3"
+	"\vValidateJWT\x12\x18.auth.ValidateJWTRequest\x1a\x19.auth.ValidateJWTResponseB(Z&github.com/nikaydo/video-App-grpc;authb\x06proto3"
 
 var (
 	file_auth_proto_rawDescOnce sync.Once

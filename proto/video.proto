@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package video;   
+
+option go_package = "github.com/nikaydo/video-Service;video";
+
+service Video{
+    rpc Get(GetRequest) returns (GetResponse);
+    rpc Add(AddRequest) returns (AddResponse);
+    rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
+
+message GetRequest {
+    string token = 1;
+    string video_name = 2;
+}
+
+message GetResponse {       
+    bytes video = 1;
+}
+
+message Tags {
+    repeated string tag = 1;
+}
+
+message AddRequest {
+    string token = 1;
+    bytes video = 2;
+    Tags name = 3;    
+}
+
+message AddResponse {
+    bool result = 1;
+}
+
+message DeleteRequest {
+     string token = 1;
+}
+
+message DeleteResponse {
+    bool result = 1;
+}
