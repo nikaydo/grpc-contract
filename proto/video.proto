@@ -15,8 +15,17 @@ message GetRequest {
     string video_name = 2;
 }
 
-message GetResponse {       
+message SavedVideo{
     bytes video = 1;
+    string uuid = 2;
+}
+
+message Videos {
+    repeated SavedVideo video = 1;
+}
+
+message GetResponse {       
+    Videos video =1;
 }
 
 message Tags {
