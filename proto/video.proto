@@ -35,7 +35,7 @@ message AddResponse {
 }
 
 message DeleteRequest {
-     string token = 1;
+    string uuid = 1;
 }
 
 message DeleteResponse {

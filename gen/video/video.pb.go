@@ -275,7 +275,7 @@ func (x *AddResponse) GetResult() bool {
 
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -310,9 +310,9 @@ func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_video_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *DeleteRequest) GetToken() string {
+func (x *DeleteRequest) GetUuid() string {
 	if x != nil {
-		return x.Token
+		return x.Uuid
 	}
 	return ""
 }
@@ -382,9 +382,9 @@ const file_video_proto_rawDesc = "" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1f\n" +
 	"\x04tags\x18\x04 \x01(\v2\v.video.TagsR\x04tags\"%\n" +
 	"\vAddResponse\x12\x16\n" +
-	"\x06result\x18\x01 \x01(\bR\x06result\"%\n" +
-	"\rDeleteRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"(\n" +
+	"\x06result\x18\x01 \x01(\bR\x06result\"#\n" +
+	"\rDeleteRequest\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"(\n" +
 	"\x0eDeleteResponse\x12\x16\n" +
 	"\x06result\x18\x01 \x01(\bR\x06result2\x9a\x01\n" +
 	"\x05Video\x12,\n" +
