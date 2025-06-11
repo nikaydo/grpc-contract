@@ -165,7 +165,8 @@ type AddRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	Video         []byte                 `protobuf:"bytes,2,opt,name=video,proto3" json:"video,omitempty"`
-	Name          *Tags                  `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Tags          *Tags                  `protobuf:"bytes,4,opt,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -214,9 +215,16 @@ func (x *AddRequest) GetVideo() []byte {
 	return nil
 }
 
-func (x *AddRequest) GetName() *Tags {
+func (x *AddRequest) GetName() string {
 	if x != nil {
 		return x.Name
+	}
+	return ""
+}
+
+func (x *AddRequest) GetTags() *Tags {
+	if x != nil {
+		return x.Tags
 	}
 	return nil
 }
@@ -366,12 +374,13 @@ const file_video_proto_rawDesc = "" +
 	"\vGetResponse\x12\x14\n" +
 	"\x05video\x18\x01 \x01(\fR\x05video\"\x18\n" +
 	"\x04Tags\x12\x10\n" +
-	"\x03tag\x18\x01 \x03(\tR\x03tag\"Y\n" +
+	"\x03tag\x18\x01 \x03(\tR\x03tag\"m\n" +
 	"\n" +
 	"AddRequest\x12\x14\n" +
 	"\x05token\x18\x01 \x01(\tR\x05token\x12\x14\n" +
-	"\x05video\x18\x02 \x01(\fR\x05video\x12\x1f\n" +
-	"\x04name\x18\x03 \x01(\v2\v.video.TagsR\x04name\"%\n" +
+	"\x05video\x18\x02 \x01(\fR\x05video\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1f\n" +
+	"\x04tags\x18\x04 \x01(\v2\v.video.TagsR\x04tags\"%\n" +
 	"\vAddResponse\x12\x16\n" +
 	"\x06result\x18\x01 \x01(\bR\x06result\"%\n" +
 	"\rDeleteRequest\x12\x14\n" +
@@ -406,7 +415,7 @@ var file_video_proto_goTypes = []any{
 	(*DeleteResponse)(nil), // 6: video.DeleteResponse
 }
 var file_video_proto_depIdxs = []int32{
-	2, // 0: video.AddRequest.name:type_name -> video.Tags
+	2, // 0: video.AddRequest.tags:type_name -> video.Tags
 	0, // 1: video.Video.Get:input_type -> video.GetRequest
 	3, // 2: video.Video.Add:input_type -> video.AddRequest
 	5, // 3: video.Video.Delete:input_type -> video.DeleteRequest

@@ -26,7 +26,8 @@ message Tags {
 message AddRequest {
     string token = 1;
     bytes video = 2;
-    Tags name = 3;    
+    string name =3;
+    Tags tags = 4;    
 }
 
 message AddResponse {
