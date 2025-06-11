@@ -18,6 +18,7 @@ message GetRequest {
 message SavedVideo{
     bytes video = 1;
     string uuid = 2;
+    string title = 3;
 }
 
 message Videos {
