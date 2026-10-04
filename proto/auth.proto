@@ -32,6 +32,11 @@ message SignUpRequest {
 
 message SignUpResponse {
   int32 user_id = 1;
+  // Токены выдаются сразу: после регистрации клиенту не нужно отправлять
+  // пароль ещё раз, чтобы войти. Поля добавлены, поэтому существующие
+  // номера не изменились.
+  string token = 2;
+  string refresh_token = 3;
 }
 
 message SignInRequest {
@@ -62,7 +67,11 @@ message CheckUserRequest {
 message User {
   int32 id = 1;
   string login = 2;
-  string refresh = 3;
+  // refresh больше не используется: refresh-токен хранится у клиента в
+  // HttpOnly-cookie и предъявляется при ротации. Номер сохранён, чтобы не
+  // сдвинуть нумерацию.
+  reserved 3;
+  reserved "refresh";
 }
 
 message CheckUserResponse {
@@ -73,6 +82,12 @@ message CreateTokensRequest {
   int32 id = 1;
   string login = 2;
   string role = 3;
+  // Хеш предъявленного refresh-токена. Непустое значение означает ротацию:
+  // сервис отзовёт этот токен и выдаст новую пару. Пустое — новая сессия.
+  string rotate_from = 4;
+  // Семейство, в котором выдаётся новый токен. Задаётся при ротации,
+  // чтобы новая пара продолжила то же семейство.
+  string family_id = 5;
 }
 
 message CreateTokensResponse {

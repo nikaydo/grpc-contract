@@ -82,8 +82,13 @@ func (x *SignUpRequest) GetPassword() string {
 }
 
 type SignUpResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	state  protoimpl.MessageState `protogen:"open.v1"`
+	UserId int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// Токены выдаются сразу: после регистрации клиенту не нужно отправлять
+	// пароль ещё раз, чтобы войти. Поля добавлены, поэтому существующие
+	// номера не изменились.
+	Token         string `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	RefreshToken  string `protobuf:"bytes,3,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -123,6 +128,20 @@ func (x *SignUpResponse) GetUserId() int32 {
 		return x.UserId
 	}
 	return 0
+}
+
+func (x *SignUpResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *SignUpResponse) GetRefreshToken() string {
+	if x != nil {
+		return x.RefreshToken
+	}
+	return ""
 }
 
 type SignInRequest struct {
@@ -298,7 +317,6 @@ type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Login         string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
-	Refresh       string                 `protobuf:"bytes,3,opt,name=refresh,proto3" json:"refresh,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -343,13 +361,6 @@ func (x *User) GetId() int32 {
 func (x *User) GetLogin() string {
 	if x != nil {
 		return x.Login
-	}
-	return ""
-}
-
-func (x *User) GetRefresh() string {
-	if x != nil {
-		return x.Refresh
 	}
 	return ""
 }
@@ -399,10 +410,16 @@ func (x *CheckUserResponse) GetUser() *User {
 }
 
 type CreateTokensRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Login         string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
-	Role          string                 `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Login string                 `protobuf:"bytes,2,opt,name=login,proto3" json:"login,omitempty"`
+	Role  string                 `protobuf:"bytes,3,opt,name=role,proto3" json:"role,omitempty"`
+	// Хеш предъявленного refresh-токена. Непустое значение означает ротацию:
+	// сервис отзовёт этот токен и выдаст новую пару. Пустое — новая сессия.
+	RotateFrom string `protobuf:"bytes,4,opt,name=rotate_from,json=rotateFrom,proto3" json:"rotate_from,omitempty"`
+	// Семейство, в котором выдаётся новый токен. Задаётся при ротации,
+	// чтобы новая пара продолжила то же семейство.
+	FamilyId      string `protobuf:"bytes,5,opt,name=family_id,json=familyId,proto3" json:"family_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -454,6 +471,20 @@ func (x *CreateTokensRequest) GetLogin() string {
 func (x *CreateTokensRequest) GetRole() string {
 	if x != nil {
 		return x.Role
+	}
+	return ""
+}
+
+func (x *CreateTokensRequest) GetRotateFrom() string {
+	if x != nil {
+		return x.RotateFrom
+	}
+	return ""
+}
+
+func (x *CreateTokensRequest) GetFamilyId() string {
+	if x != nil {
+		return x.FamilyId
 	}
 	return ""
 }
@@ -633,9 +664,11 @@ const file_auth_proto_rawDesc = "" +
 	"auth.proto\x12\x04auth\"A\n" +
 	"\rSignUpRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\")\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"d\n" +
 	"\x0eSignUpResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x05R\x06userId\"O\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x14\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\x12#\n" +
+	"\rrefresh_token\x18\x03 \x01(\tR\frefreshToken\"O\n" +
 	"\rSignInRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpasswordJ\x04\b\x03\x10\x04R\x06app_id\"K\n" +
@@ -645,18 +678,20 @@ const file_auth_proto_rawDesc = "" +
 	"\x10CheckUserRequest\x12\x14\n" +
 	"\x05login\x18\x01 \x01(\tR\x05login\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\x12)\n" +
-	"\x10require_password\x18\x03 \x01(\bR\x0frequirePassword\"F\n" +
+	"\x10require_password\x18\x03 \x01(\bR\x0frequirePassword\";\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
-	"\x05login\x18\x02 \x01(\tR\x05login\x12\x18\n" +
-	"\arefresh\x18\x03 \x01(\tR\arefresh\"3\n" +
+	"\x05login\x18\x02 \x01(\tR\x05loginJ\x04\b\x03\x10\x04R\arefresh\"3\n" +
 	"\x11CheckUserResponse\x12\x1e\n" +
 	"\x04user\x18\x01 \x01(\v2\n" +
-	".auth.UserR\x04user\"O\n" +
+	".auth.UserR\x04user\"\x8d\x01\n" +
 	"\x13CreateTokensRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x14\n" +
 	"\x05login\x18\x02 \x01(\tR\x05login\x12\x12\n" +
-	"\x04role\x18\x03 \x01(\tR\x04role\"X\n" +
+	"\x04role\x18\x03 \x01(\tR\x04role\x12\x1f\n" +
+	"\vrotate_from\x18\x04 \x01(\tR\n" +
+	"rotateFrom\x12\x1b\n" +
+	"\tfamily_id\x18\x05 \x01(\tR\bfamilyId\"X\n" +
 	"\x14CreateTokensResponse\x12\x1b\n" +
 	"\tjwt_token\x18\x01 \x01(\tR\bjwtToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\"D\n" +

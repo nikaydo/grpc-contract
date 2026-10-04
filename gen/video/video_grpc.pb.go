@@ -34,9 +34,9 @@ type VideoClient interface {
 	Get(ctx context.Context, in *GetRequest, opts ...grpc.CallOption) (*GetResponse, error)
 	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteResponse, error)
-	// Stream отдаёт видео последовательностью сообщений, а не одним
-	// ответом целиком. Раньше метод был обычным unary: клиент загружал весь
-	// файл в память, что ограничивало размер видео размером сообщения.
+	// Stream отдаёт видео последовательностью сообщений, а не одним ответом
+	// целиком. Метод был обычным unary: клиент загружал весь файл в память,
+	// что ограничивало размер видео размером одного сообщения.
 	Stream(ctx context.Context, in *StreamRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[StreamResponse], error)
 }
 
@@ -104,9 +104,9 @@ type VideoServer interface {
 	Get(context.Context, *GetRequest) (*GetResponse, error)
 	Add(context.Context, *AddRequest) (*AddResponse, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteResponse, error)
-	// Stream отдаёт видео последовательностью сообщений, а не одним
-	// ответом целиком. Раньше метод был обычным unary: клиент загружал весь
-	// файл в память, что ограничивало размер видео размером сообщения.
+	// Stream отдаёт видео последовательностью сообщений, а не одним ответом
+	// целиком. Метод был обычным unary: клиент загружал весь файл в память,
+	// что ограничивало размер видео размером одного сообщения.
 	Stream(*StreamRequest, grpc.ServerStreamingServer[StreamResponse]) error
 	mustEmbedUnimplementedVideoServer()
 }

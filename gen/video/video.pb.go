@@ -112,9 +112,14 @@ func (x *StreamResponse) GetVideo() []byte {
 }
 
 type GetRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	VideoName     string                 `protobuf:"bytes,2,opt,name=video_name,json=videoName,proto3" json:"video_name,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Идентификатор владельца. Раньше здесь передавался API-токен, и сервис
+	// хранил его: токен попадал в базу, а проверки владельца не было — поиск шёл
+	// только по названию, поэтому одноимённые видео разных пользователей
+	// смешивались. Теперь токен проверяет шлюз, а сервис получает готовый
+	// user_id.
+	UserId        int32  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	VideoName     string `protobuf:"bytes,2,opt,name=video_name,json=videoName,proto3" json:"video_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -149,11 +154,11 @@ func (*GetRequest) Descriptor() ([]byte, []int) {
 	return file_video_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetRequest) GetToken() string {
+func (x *GetRequest) GetUserId() int32 {
 	if x != nil {
-		return x.Token
+		return x.UserId
 	}
-	return ""
+	return 0
 }
 
 func (x *GetRequest) GetVideoName() string {
@@ -349,7 +354,7 @@ func (x *Tags) GetTag() []string {
 
 type AddRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	UserId        int32                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Video         []byte                 `protobuf:"bytes,2,opt,name=video,proto3" json:"video,omitempty"`
 	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	Tags          *Tags                  `protobuf:"bytes,4,opt,name=tags,proto3" json:"tags,omitempty"`
@@ -387,11 +392,11 @@ func (*AddRequest) Descriptor() ([]byte, []int) {
 	return file_video_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *AddRequest) GetToken() string {
+func (x *AddRequest) GetUserId() int32 {
 	if x != nil {
-		return x.Token
+		return x.UserId
 	}
-	return ""
+	return 0
 }
 
 func (x *AddRequest) GetVideo() []byte {
@@ -461,8 +466,8 @@ func (x *AddResponse) GetResult() bool {
 
 type DeleteRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// user_id обязателен: без него видео можно было удалить по одному
-	// только uuid, без проверки владельца.
+	// Идентификатор владельца обязателен: без него видео можно было удалить по
+	// одному только uuid, без проверки владельца.
 	UserId        int32  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Uuid          string `protobuf:"bytes,2,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -565,12 +570,12 @@ const file_video_proto_rawDesc = "" +
 	"\rStreamRequest\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\"&\n" +
 	"\x0eStreamResponse\x12\x14\n" +
-	"\x05video\x18\x01 \x01(\fR\x05video\"A\n" +
+	"\x05video\x18\x01 \x01(\fR\x05video\"Q\n" +
 	"\n" +
-	"GetRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\x12\x1d\n" +
+	"GetRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x1d\n" +
 	"\n" +
-	"video_name\x18\x02 \x01(\tR\tvideoName\"6\n" +
+	"video_name\x18\x02 \x01(\tR\tvideoNameJ\x04\b\x03\x10\x04R\x05token\"6\n" +
 	"\n" +
 	"SavedVideo\x12\x12\n" +
 	"\x04uuid\x18\x02 \x01(\tR\x04uuid\x12\x14\n" +
@@ -580,13 +585,13 @@ const file_video_proto_rawDesc = "" +
 	"\vGetResponse\x12#\n" +
 	"\x05video\x18\x01 \x01(\v2\r.video.VideosR\x05video\"\x18\n" +
 	"\x04Tags\x12\x10\n" +
-	"\x03tag\x18\x01 \x03(\tR\x03tag\"m\n" +
+	"\x03tag\x18\x01 \x03(\tR\x03tag\"}\n" +
 	"\n" +
-	"AddRequest\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\x12\x14\n" +
+	"AddRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x05R\x06userId\x12\x14\n" +
 	"\x05video\x18\x02 \x01(\fR\x05video\x12\x12\n" +
 	"\x04name\x18\x03 \x01(\tR\x04name\x12\x1f\n" +
-	"\x04tags\x18\x04 \x01(\v2\v.video.TagsR\x04tags\"%\n" +
+	"\x04tags\x18\x04 \x01(\v2\v.video.TagsR\x04tagsJ\x04\b\x05\x10\x06R\x05token\"%\n" +
 	"\vAddResponse\x12\x16\n" +
 	"\x06result\x18\x01 \x01(\bR\x06result\"<\n" +
 	"\rDeleteRequest\x12\x17\n" +

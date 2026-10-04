@@ -11,9 +11,9 @@ service Video {
   rpc Add (AddRequest) returns (AddResponse);
   rpc Delete (DeleteRequest) returns (DeleteResponse);
 
-  // Stream отдаёт видео последовательностью сообщений, а не одним
-  // ответом целиком. Раньше метод был обычным unary: клиент загружал весь
-  // файл в память, что ограничивало размер видео размером сообщения.
+  // Stream отдаёт видео последовательностью сообщений, а не одним ответом
+  // целиком. Метод был обычным unary: клиент загружал весь файл в память,
+  // что ограничивало размер видео размером одного сообщения.
   rpc Stream (StreamRequest) returns (stream StreamResponse);
 }
 
@@ -26,8 +26,17 @@ message StreamResponse {
 }
 
 message GetRequest {
-  string token = 1;
+  // Идентификатор владельца. Раньше здесь передавался API-токен, и сервис
+  // хранил его: токен попадал в базу, а проверки владельца не было — поиск шёл
+  // только по названию, поэтому одноимённые видео разных пользователей
+  // смешивались. Теперь токен проверяет шлюз, а сервис получает готовый
+  // user_id.
+  int32 user_id = 1;
   string video_name = 2;
+  // Номер 3 раньше занимал token. Номер сохранён, чтобы не сдвинуть
+  // нумерацию полей.
+  reserved 3;
+  reserved "token";
 }
 
 message SavedVideo {
@@ -48,10 +57,13 @@ message Tags {
 }
 
 message AddRequest {
-  string token = 1;
+  int32 user_id = 1;
   bytes video = 2;
   string name = 3;
   Tags tags = 4;
+  // Номер 5 раньше занимал token.
+  reserved 5;
+  reserved "token";
 }
 
 message AddResponse {
@@ -59,8 +71,8 @@ message AddResponse {
 }
 
 message DeleteRequest {
-  // user_id обязателен: без него видео можно было удалить по одному
-  // только uuid, без проверки владельца.
+  // Идентификатор владельца обязателен: без него видео можно было удалить по
+  // одному только uuid, без проверки владельца.
   int32 user_id = 1;
   string uuid = 2;
 }
