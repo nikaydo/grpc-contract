@@ -1,39 +1,57 @@
 syntax = "proto3";
 
-package apiToken;   
+// Контракт сервиса API-токенов.
 
-option go_package = "github.com/nikaydo/video-App-grpc;apiToken";
+package apiToken;
 
-service apiToken{
-    rpc Create(CreateRequest) returns (CreateResponse);
-    rpc Delete(DeleteRequest) returns (DeleteResponse);
-    rpc Get(GetRequest) returns (GetResponse);
-    rpc Verify(VerifyRequest) returns (VerifyResponse);
-} 
+option go_package = "github.com/nikaydo/grpc-contract/gen/apiToken";
+
+// Имя сервиса приведено к PascalCase: имена в нижнем регистре не
+// соответствуют соглашениям protobuf и плохо читаются в трассировках.
+service ApiToken {
+  rpc Create (CreateRequest) returns (CreateResponse);
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+  rpc Get (GetRequest) returns (GetResponse);
+  rpc Verify (VerifyRequest) returns (VerifyResponse);
+}
+
 message CreateRequest {
-    int32 id = 1;
+  // Переименовано из id в user_id: значение однозначно указывает
+  // владельца токена, а не запись в таблице.
+  int32 user_id = 1;
 }
+
 message CreateResponse {
-    string token = 1;
+  string token = 1;
 }
+
 message DeleteRequest {
-    string token = 1;
+  // user_id обязателен: без него токен можно было бы удалить у другого
+  // владельца, просто зная его значение.
+  int32 user_id = 1;
+  string token = 2;
 }
+
 message DeleteResponse {
-    bool result = 1;
+  bool result = 1;
 }
+
 message GetRequest {
-    int32 id = 1;
+  int32 user_id = 1;
 }
+
 message Tokens {
-    repeated string tokens = 1;
+  repeated string tokens = 1;
 }
+
 message GetResponse {
-    Tokens tokens = 1;
+  Tokens tokens = 1;
 }
+
 message VerifyRequest {
-    string token = 1;
+  string token = 1;
 }
+
 message VerifyResponse {
-    bool result = 1;
+  bool result = 1;
 }
