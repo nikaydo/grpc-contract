@@ -1,0 +1,54 @@
+name: Go
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  contract:
+    name: Контракт
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Установить Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.x'
+          cache: true
+
+      - name: Установить protoc
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Установить генераторы
+        run: |
+          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+
+      - name: Проверить, что сгенерированный код совпадает с .proto
+        run: |
+          for svc in auth apiToken video; do
+            protoc -I proto "proto/$svc.proto" \
+              --go_out="./gen/$svc" --go_opt=paths=source_relative \
+              --go-grpc_out="./gen/$svc" --go-grpc_opt=paths=source_relative
+          done
+          if ! git diff --quiet -- gen; then
+            echo "Сгенерированный код разошёлся с .proto:"
+            git --no-pager diff --stat -- gen
+            exit 1
+          fi
+
+      - name: Сборка и vet
+        run: |
+          go build ./...
+          go vet ./...
+
+      - name: Тесты
+        run: go test -race ./...

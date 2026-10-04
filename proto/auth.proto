@@ -1,21 +1,33 @@
 syntax = "proto3";
 
-package auth;   
+// Контракт сервиса авторизации.
+//
+// Пакет и имя модуля в go_package соответствуют репозиторию grpc-contract:
+// сгенерированный код лежит в gen/auth, и сервисы импортируют его как
+// github.com/nikaydo/grpc-contract/gen/auth. Раньше здесь был указан
+// несуществующий модуль, из-за чего путь в директиве расходился с фактическим
+// импортом и сбивал с толку при генерации.
 
-option go_package = "github.com/nikaydo/video-App-grpc;auth";
+package auth;
 
-service Auth{
-    rpc SignUp (SignUpRequest) returns (SignUpResponse);
-    rpc SignIn (SignInRequest) returns (SignInResponse);
+option go_package = "github.com/nikaydo/grpc-contract/gen/auth";
 
-    rpc CheckUser (CheckUserRequest) returns (CheckUserResponse);
-    rpc CreateTokens(CreateTokensRequest) returns (CreateTokensResponse);
+service Auth {
+  rpc SignUp (SignUpRequest) returns (SignUpResponse);
+  rpc SignIn (SignInRequest) returns (SignInResponse);
 
-    rpc ValidateJWT(ValidateJWTRequest) returns (ValidateJWTResponse);
-} 
+  // CheckUser возвращает пользователя по логину. Пароль никогда не
+  // возвращается наружу: поле require_password управляет только тем,
+  // участвует ли пароль в условии поиска.
+  rpc CheckUser (CheckUserRequest) returns (CheckUserResponse);
+
+  rpc CreateTokens (CreateTokensRequest) returns (CreateTokensResponse);
+  rpc ValidateJWT (ValidateJWTRequest) returns (ValidateJWTResponse);
+}
+
 message SignUpRequest {
-  string login = 1; 
-  string password = 2; 
+  string login = 1;
+  string password = 2;
 }
 
 message SignUpResponse {
@@ -23,19 +35,28 @@ message SignUpResponse {
 }
 
 message SignInRequest {
-  string login = 1; 
-  string password = 2; 
-  int32 app_id = 3; 
+  string login = 1;
+  string password = 2;
+  // Поле app_id больше не используется. Номер сохранён, чтобы не сдвинуть
+  // нумерацию остальных полей: переиспользовать его нельзя.
+  reserved 3;
+  reserved "app_id";
 }
 
 message SignInResponse {
   string token = 1;
+  // Refresh-токен раньше выпускался, но не возвращался: клиент не мог
+  // обновить сессию после истечения access-токена.
+  string refresh_token = 2;
 }
 
 message CheckUserRequest {
-  string login = 1; 
-  string password = 2; 
-  bool withPass =3;
+  string login = 1;
+  string password = 2;
+  // require_password = true добавляет к условию поиска проверку пароля.
+  // Переименовано из with_pass: имя не отражало смысла — пароль в ответе
+  // никогда не возвращается.
+  bool require_password = 3;
 }
 
 message User {
@@ -45,27 +66,30 @@ message User {
 }
 
 message CheckUserResponse {
-  User user =1;
+  User user = 1;
 }
 
 message CreateTokensRequest {
-  int32 id = 1; 
-  string login = 2; 
-  string role = 3; 
+  int32 id = 1;
+  string login = 2;
+  string role = 3;
 }
 
 message CreateTokensResponse {
-  string jwtToken = 1; 
-  string refreshToken = 2; 
+  string jwt_token = 1;
+  string refresh_token = 2;
 }
 
-message  ValidateJWTRequest{
-  string token = 1; 
-  bool refresh = 2; 
+message ValidateJWTRequest {
+  string token = 1;
+  bool refresh = 2;
 }
 
 message ValidateJWTResponse {
-  int32 id =1;
-  bool expired = 2; 
+  int32 id = 1;
+  // expired сообщает, что срок токена истёк, но сам токен разбирается.
+  // Вызывающий обязан проверить это поле: раньше его игнорировали, и
+  // просроченный refresh-токен проходил проверку.
+  bool expired = 2;
   string login = 3;
 }

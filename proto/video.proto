@@ -1,61 +1,70 @@
 syntax = "proto3";
 
-package video;   
+// Контракт сервиса видео.
 
-option go_package = "github.com/nikaydo/video-Service;video";
+package video;
 
-service Video{
-    rpc Get(GetRequest) returns (GetResponse);
-    rpc Stream(StreamRequest) returns (StreamResponse);
-    rpc Add(AddRequest) returns (AddResponse);
-    rpc Delete(DeleteRequest) returns (DeleteResponse);
+option go_package = "github.com/nikaydo/grpc-contract/gen/video";
+
+service Video {
+  rpc Get (GetRequest) returns (GetResponse);
+  rpc Add (AddRequest) returns (AddResponse);
+  rpc Delete (DeleteRequest) returns (DeleteResponse);
+
+  // Stream отдаёт видео последовательностью сообщений, а не одним
+  // ответом целиком. Раньше метод был обычным unary: клиент загружал весь
+  // файл в память, что ограничивало размер видео размером сообщения.
+  rpc Stream (StreamRequest) returns (stream StreamResponse);
 }
 
-message StreamRequest{
-    string uuid = 1;
+message StreamRequest {
+  string uuid = 1;
 }
 
-message StreamResponse{
-    bytes video = 1;
+message StreamResponse {
+  bytes video = 1;
 }
 
 message GetRequest {
-    string token = 1;
-    string video_name = 2;
+  string token = 1;
+  string video_name = 2;
 }
 
-message SavedVideo{
-    string uuid = 2;
-    string title = 3;
+message SavedVideo {
+  string uuid = 2;
+  string title = 3;
 }
 
 message Videos {
-    repeated SavedVideo video = 1;
+  repeated SavedVideo video = 1;
 }
 
-message GetResponse {       
-    Videos video =1;
+message GetResponse {
+  Videos video = 1;
 }
 
 message Tags {
-    repeated string tag = 1;
+  repeated string tag = 1;
 }
 
 message AddRequest {
-    string token = 1;
-    bytes video = 2;
-    string name =3;
-    Tags tags = 4;    
+  string token = 1;
+  bytes video = 2;
+  string name = 3;
+  Tags tags = 4;
 }
 
 message AddResponse {
-    bool result = 1;
+  bool result = 1;
 }
 
 message DeleteRequest {
-    string uuid = 1;
+  // user_id обязателен: без него видео можно было удалить по одному
+  // только uuid, без проверки владельца.
+  int32 user_id = 1;
+  string uuid = 2;
 }
 
 message DeleteResponse {
-    bool result = 1;
+  bool result = 1;
 }
