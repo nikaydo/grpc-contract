@@ -1,10 +1,28 @@
 version: '3'
 
+# Версия protoc фиксирована явно: в комментарии сгенерированного файла
+# указывается версия компилятора, и если в CI она отличается от рабочей,
+# проверка «совпадает ли код с .proto» падает без реальной причины.
+#
+# Локальная версия проверяется командой: protoc --version
+PROTOC_VERSION: '36.0'
+
+vars:
+  PROTOC_REPO: 'https://github.com/protocolbuffers/protobuf/releases/download'
+
 tasks:
   default:
     desc: Сгенерировать код из контрактов
     cmds:
       - task: generate
+
+  install:
+    desc: Установить генераторы protobuf
+    cmds:
+      # Генераторы ставятся без @latest: их версии объявлены в tools.go
+      # и зафиксированы в go.mod, иначе CI и рабочая машина разъезжаются.
+      - go install google.golang.org/protobuf/cmd/protoc-gen-go
+      - go install google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
   generate:
     desc: Сгенерировать Go-код из .proto
@@ -17,18 +35,27 @@ tasks:
       - 'gen/apiToken/apiToken.pb.go'
       - 'gen/video/video.pb.go'
 
-  install:
-    desc: Установить генераторы protobuf
+  # Проверка версий помогает понять, почему код не совпал.
+  versions:
+    desc: Показать версии генераторов
     cmds:
-      - go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-      - go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+      - protoc --version
+      - protoc-gen-go --version
+      - protoc-gen-go-grpc --version
+
+  # Генераторы собираются из текущего модуля, поэтому версия всегда
+  # соответствует зафиксированной в go.mod.
+  build-generators:
+    desc: Собрать генераторы из текущего модуля
+    cmds:
+      - go build -o bin/protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go
+      - go build -o bin/protoc-gen-go-grpc google.golang.org/grpc/cmd/protoc-gen-go-grpc
 
   lint:
     desc: Проверить, что сгенерированный код не устарел
     cmds:
-      - |
-        task generate
-        if ! git diff --quiet -- gen; then
+      - task: generate
+      - if ! git diff --quiet -- gen; then
           echo "Сгенерированный код разошёлся с .proto. Выполните task generate и закоммитьте результат."
           git --no-pager diff --stat -- gen
           exit 1

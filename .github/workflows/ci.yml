@@ -22,15 +22,28 @@ jobs:
           go-version: '1.24.x'
           cache: true
 
+      # Версия protoc фиксирована: в комментарии сгенерированного файла
+      # указывается версия компилятора, и её расхождение с рабочей машиной
+      # ломало бы проверку «совпадает ли код с .proto».
       - name: Установить protoc
         run: |
-          sudo apt-get update
-          sudo apt-get install -y protobuf-compiler
+          curl -fsSL -o protoc.zip \
+            "https://github.com/protocolbuffers/protobuf/releases/download/v36.0/protoc-36.0-linux-x86_64.zip"
+          unzip -q protoc.zip -d "$HOME/protoc"
+          echo "$HOME/protoc/bin" >> "$GITHUB_PATH"
 
-      - name: Установить генераторы
+      # Генераторы собираются из текущего модуля: их версии объявлены в
+      # tools.go и зафиксированы в go.mod.
+      - name: Собрать генераторы
         run: |
-          go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-          go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+          go build -o "$HOME/protoc/bin/protoc-gen-go" google.golang.org/protobuf/cmd/protoc-gen-go
+          go build -o "$HOME/protoc/bin/protoc-gen-go-grpc" google.golang.org/grpc/cmd/protoc-gen-go-grpc
+
+      - name: Показать версии
+        run: |
+          protoc --version
+          protoc-gen-go --version
+          protoc-gen-go-grpc --version
 
       - name: Проверить, что сгенерированный код совпадает с .proto
         run: |
